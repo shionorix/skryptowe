@@ -1,26 +1,40 @@
-class Exception:
-    print("Value cannot be converted to number")
+class StringException(Exception):
+    pass
+
+class TypeException(Exception):
+    pass
 
 def sum(arg1, arg2):
     if isinstance(arg1, str):
         arg1 = convert(arg1)
     if isinstance(arg2, str):
         arg2 = convert(arg2)
-    return arg1 + arg2
+    exc_flag = False
+    try:
+        arg1 + arg2
+    except TypeError:
+        exc_flag = True
+    finally:
+        if exc_flag == True:
+            raise TypeException("Invalid data type")
+        else:
+            return arg1 + arg2
 
 def convert(arg):
+    exc_flag = False
     try:
         float(arg)
     except ValueError:   
-        raise Exception()
-    else:
-        arg = float(arg)
+        exc_flag = True
+    finally:
+        if exc_flag == True:
+            raise StringException("String cannot be converted to number")
+        else:
+            arg = float(arg)
     return arg
-
-suma = sum(2.1, 3)
 
 #print(f'__name__ = {__name__}')
 
 if __name__ == '__main__':
-    print(f'suma = {suma}')
+    print(f'suma = {sum(2.1, 3)}')
 
