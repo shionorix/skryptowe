@@ -1,1 +1,1 @@
-# skryptopwe Python 
+# skryptowe Python 
