@@ -19,13 +19,13 @@ class Test_TestSum(unittest.TestCase):
     def test_sum_integer_wrong_number_in_string(self):
         try:
             self.assertEqual(main.sum(2, 'Ala ma kota123'), 2)
-        except Exception:
+        except main.StringException:
             print(Exception())
 
-    def test_exception(self):
-        self.assertRaises(Exception, main.sum, 2, 'Ala ma kota123')
-        self.assertRaises(Exception, main.sum, 2, [1,2])
-        self.assertRaises(Exception, main.sum, [1,2], {1,2})
+    def test_exceptions(self):
+        self.assertRaises(main.StringException, main.sum, 2, 'Ala ma kota123')
+        self.assertRaises(main.TypeException, main.sum, 2, [1,2])
+        self.assertRaises(main.TypeException, main.sum, {1,2}, [1,2])
 
     def test_sum_rational_rational(self):
         self.assertEqual(main.sum(Fraction(3,4), Fraction(1,4)), 1)
