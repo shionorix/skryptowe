@@ -1,0 +1,1 @@
+# skryptopwe Python 
