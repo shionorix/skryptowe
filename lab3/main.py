@@ -27,3 +27,8 @@ print('\tKlasa.tab   ->', Klasa.tab)
 print('\tobiekt1.tab ->', obiekt1.tab)
 print('\tobiekt2.tab ->', obiekt2.tab)
 print('*' * 30)
+
+obiekt = Klasa([4, 5, 6], 10, 20)
+print(obiekt.tab)
+print(obiekt._zmienna1)
+print(obiekt._Klasa__zmienna2)

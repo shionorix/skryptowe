@@ -10,9 +10,9 @@ class Day(Enum):
     SUN = 7
     def difference(self, day):
         d = day.value - self.value
-        if d > 3:
+        if d > 4:
             return d - 7
-        elif d < -3:
+        elif d < -4:
             return d + 7
         else:
             return d

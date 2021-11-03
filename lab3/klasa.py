@@ -1,6 +1,6 @@
 class Klasa(object):
     tab = [1,2,3]
-    def __init__(self, tab, a, b):
+    def __init__(self, tab, a = None, b = None):
         self.tab = tab
         self._zmienna1 = a
         self.__zmienna2 = b
@@ -28,4 +28,3 @@ class Klasa(object):
 
 
 
-# print(obiekt._Klasa__zmienna2)
