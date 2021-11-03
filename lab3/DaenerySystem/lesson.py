@@ -68,15 +68,3 @@ class Lesson(object):
                 self.term.hour += (self.term.duration//60)+1
                 self.term.minute += (t-60)
 
-
-if __name__ == '__main__':
-    lesson = Lesson(Term(8, 35, 90, Day.FRI), "Programowanie skryptowe", "Stanisław Polak", 2)
-    print(lesson); 
-    lesson.earlierDay()
-    print(lesson)
-    lesson.laterDay()
-    print(lesson)
-    lesson.earlierTime()
-    print(lesson)
-    lesson.laterTime()
-    print(lesson)
