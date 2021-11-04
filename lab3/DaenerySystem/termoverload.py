@@ -2,8 +2,7 @@ from term import Term
 from day import Day
 
 term1 = Term(8, 30)
-term2 = Term(9, 45, 30, Day.TUE)
-print(term2._Term__day.value)
+term2 = Term(9, 45, 30)
 term3 = Term(9, 45, 90)
 print(term1)                             # Ma się wypisać: "8:30 [90]"
 print(term2)                             # Ma się wypisać: "9:45 [30]"
