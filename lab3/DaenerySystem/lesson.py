@@ -9,6 +9,7 @@ class Lesson(object):
         self.__teacherName = teacherName
         self.__year = year
         self.__timetable = timetable
+
         if term._Term__day.value < 5:
             if term.hour*60+term.minute+term.duration <= 20*60 and term.hour*60+term.minute >= 8*60:
                 self.__full_time = True
@@ -17,7 +18,7 @@ class Lesson(object):
         elif term._Term__day.value == 5:
             if term.hour*60+term.minute+term.duration <= 17*60 and term.hour*60+term.minute >= 8*60:
                 self.__full_time = True
-            elif term.hour*60+term.minute+term.duration <= 20*60 and term.hour*60+term.minute >= 17*20:
+            elif term.hour*60+term.minute+term.duration <= 20*60 and term.hour*60+term.minute >= 17*60:
                 self.__full_time = False
             else:
                 self.__full_time = None
@@ -102,7 +103,7 @@ class Lesson(object):
         t = self.term.duration%60
         if self.term.minute >= t:
             if self.full_time == Lesson(Term(self.term.hour-(self.term.duration//60),self.term.minute-t,self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:
-                self.term.hour-=self.term.duration//60
+                self.term.hour -= self.term.duration//60
                 self.term.minute -= t
         else:
             if self.full_time == Lesson(Term(self.term.hour-(self.term.duration//60),self.term.minute-(t-60),self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:
@@ -113,7 +114,7 @@ class Lesson(object):
         t = self.term.duration%60
         if self.term.minute + t <= 60:
             if self.full_time == Lesson(Term(self.term.hour+(self.term.duration//60),self.term.minute+t,self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:
-                self.term.hour+=self.term.duration//60
+                self.term.hour += self.term.duration//60
                 self.term.minute += t
         else:
             if self.full_time == Lesson(Term(self.term.hour+(self.term.duration//60)+1,self.term.minute+(t-60),self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:

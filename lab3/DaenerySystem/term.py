@@ -105,6 +105,10 @@ class Term(object):
             return True
         return False
 
+
+    def start_time(self):
+        return (self.__hour, self.__minute)
+        
     def end_time(self):
         add_hour = self.__duration // 60
         add_min = self.__duration % 60
