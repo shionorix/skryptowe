@@ -1,6 +1,6 @@
 from typing import List
 from term import Term
-from lesson import Lesson
+import lesson
 from day import Day
 from action import Action
 
@@ -50,7 +50,7 @@ class Timetable1(object):
         else:
             return False
 
-    def put(self, lesson: Lesson) -> bool:
+    def put(self, lesson: lesson.Lesson) -> bool:
         if not self.busy(lesson.term):
             self.table[lesson.term.day][self.hourtrans[lesson.term.start_time()]] = lesson
             self.lessons.append(lesson)
@@ -66,24 +66,37 @@ class Timetable1(object):
         actions = []
         for i in range(len(temp)):
             actions.append(trans[temp[i]])
-
         return actions
     
 
     def perform(self, actions: List[Action]):
+        actions_trans = { 
+        Action.TIME_EARLIER : lesson.Lesson.earlierTime,
+        Action.TIME_LATER : lesson.Lesson.laterTime,
+        Action.DAY_LATER : lesson.Lesson.laterDay,
+        Action.DAY_EARLIER : lesson.Lesson.earlierDay
+        }
+        for i in range(len(actions)):
+            temp = self.lessons[i%(len(self.lessons))]
+            self.table[temp.term.day][self.hourtrans[temp.term.start_time()]] = ''
+            actions_trans[actions[i]](temp)
+            self.lessons[i%(len(self.lessons))] = temp
+            self.table[temp.term.day][self.hourtrans[temp.term.start_time()]] = temp
 
-        pass
 
-    def get(self, term: Term) -> Lesson:
-        return self.table[term.day[self.hourtrans[term.start_time()]]]
+    def get(self, term: Term) -> lesson.Lesson:
+        return self.table[term.day][self.hourtrans[term.start_time()]]
         
 if __name__ == '__main__':
     tab = ['d+', 'd-','hygyh', 't+', 't-']
     t = Timetable1()
-    tab = Timetable1.parse(t, tab)
-    lesson1 = Lesson(Term(8, 0, 90, Day.FRI), "Angielski", "", 2)
-    lesson2 = Lesson(Term(18, 30, 90, Day.WED), "Programowanie", "Stanisław Polak", 2)
+    lesson1 = lesson.Lesson(Term(8, 0, 90, Day.FRI), "Angielski", "", 2)        
+    lesson2 = lesson.Lesson(Term(18, 30, 90, Day.WED), "Programowanie", "Stanisław Polak", 2)
     t.put(lesson1)
     t.put(lesson2)
-    print(t)
+    #print(t) 
+    #print(t.get(Term(18, 30, 90, Day.WED)))
+    t.perform([Action.DAY_EARLIER,  Action.DAY_LATER,  Action.TIME_LATER,Action.TIME_EARLIER])
+    print(t) 
+    print(*t.lessons)    
    # print(tab)

@@ -1,8 +1,8 @@
 from enum import Enum
 
 class Action(Enum):
-    DAY_EARLIER = 1
-    DAY_LATER = 2
-    TIME_EARLIER = 3
-    TIME_LATER = 4
+    DAY_EARLIER = 'd-'
+    DAY_LATER = 'd+'
+    TIME_EARLIER = 't-'
+    TIME_LATER = 't+'
 

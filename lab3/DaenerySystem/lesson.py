@@ -1,29 +1,31 @@
+from types import NoneType
 from day import Day
 from term import Term
-
+from teacher import Teacher
 
 class Lesson(object):
-    def __init__(self, term, name, teacherName, year, timetable = None):
+    def __init__(self, term: Term, name: str, teacherName: str, year: int, timetable = None):
         self.__term = term
         self.__name = name
         self.__teacherName = teacherName
         self.__year = year
         self.__timetable = timetable
+        self.__teacher = None
 
-        if term._Term__day.value < 5:
-            if term.hour*60+term.minute+term.duration <= 20*60 and term.hour*60+term.minute >= 8*60:
+        if term.day.value < 5:
+            if term.hour*60+term.minute+term.duration <= 20*60 and term.hour >= 8:
                 self.__full_time = True
             else:
                 self.__full_time = None
-        elif term._Term__day.value == 5:
-            if term.hour*60+term.minute+term.duration <= 17*60 and term.hour*60+term.minute >= 8*60:
+        elif term.day.value == 5:
+            if term.hour*60+term.minute+term.duration <= 17*60 and term.hour >= 8:
                 self.__full_time = True
-            elif term.hour*60+term.minute+term.duration <= 20*60 and term.hour*60+term.minute >= 17*60:
+            elif term.hour*60+term.minute+term.duration <= 20*60 and term.hour >= 17:
                 self.__full_time = False
             else:
                 self.__full_time = None
         else:
-            if term.hour*60+term.minute+term.duration <= 20*60 and term.hour*60+term.minute >= 8*60:
+            if term.hour*60+term.minute+term.duration <= 20*60 and term.hour >= 8:
                 self.__full_time = False
             else:
                 self.__full_time = None
@@ -37,6 +39,44 @@ class Lesson(object):
             True: "studia stacjonarne",
             False: "studia niestacjonarne",
         }
+
+    @property
+    def teacher(self):
+        return self.__teacher
+
+    @teacher.setter
+    def teacher(self, value):
+        if type(value) is Teacher or type(value) is NoneType:
+            self.__teacher = value
+        else:
+            raise TypeError('Pole teacher musi być typu Teacher lub NoneType')
+
+    def __add__(self, newteacher):
+        if type(newteacher) is Teacher:
+            temp = newteacher.workduration + self.term.duration
+            if temp <= 6*45:
+                newteacher.workduration = temp
+                self.teacher = newteacher
+        return self.teacher
+
+    def __sub__(self, teacher):
+        if type(teacher) is Teacher:
+            if teacher == self.teacher:
+                teacher.workduration -= self.term.duration
+                self.teacher = None
+        return self.teacher
+
+    @property
+    def timetable(self):
+        return self.__timetable
+
+    @timetable.setter
+    def timetable(self, value):
+        import timetable1
+        if type(value) is not timetable1.Timetable1:
+            raise TypeError('Plan zajęc musi być typu \'Timetable1\'')
+        else:
+            self.__timetable = value
 
     @property
     def term(self):
