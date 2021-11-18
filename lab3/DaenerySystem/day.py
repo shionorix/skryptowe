@@ -17,6 +17,18 @@ class Day(Enum):
         else:
             return d
 
+    def __str__(self):
+        str_val = {
+            1: 'Poniedziałek',
+            2: 'Wtorek',
+            3: 'Środa',
+            4: 'Czwartek',
+            5: 'Piątek',
+            6: 'Sobota',
+            7: 'Niedziela'
+        }
+        return str_val[self.value]
+
 def nthDayFrom(n, day):
     res = Day((n - 1 + day.value) % 7 + 1)
     return res

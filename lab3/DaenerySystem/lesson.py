@@ -2,6 +2,7 @@ from types import NoneType
 from day import Day
 from term import Term
 from teacher import Teacher
+import math
 
 class Lesson(object):
     def __init__(self, term: Term, name: str, teacherName: str, year: int, timetable = None):
@@ -72,11 +73,7 @@ class Lesson(object):
 
     @timetable.setter
     def timetable(self, value):
-        import timetable1
-        if type(value) is not timetable1.Timetable1:
-            raise TypeError('Plan zajęc musi być typu \'Timetable1\'')
-        else:
-            self.__timetable = value
+        self.__timetable = value
 
     @property
     def term(self):
@@ -131,33 +128,77 @@ class Lesson(object):
     def __str__(self):
         return f"{self.name} ({self.term})\n{self.trans[self.year]}, {self.trans[self.full_time]}\nProwadzący: {self.teacherName}"
 
-    def earlierDay(self):
-        if self.term._Term__day.value-1 > 0 and self.full_time == Lesson(Term(self.term.hour,self.term.minute,self.term.duration,Day(self.term._Term__day.value-1)), self.name, self.teacherName,self.year).full_time:
-            self.term._Term__day = Day(self.term._Term__day.value-1)
+    def earlierDay(self):        
+        if self.timetable.can_be_transfered_to(Term(self.term.hour,self.term.minute,self.term.duration,Day(self.term.day.value-1)), self.full_time):
+            self.term.day = Day(self.term.day.value-1)
+
 
     def laterDay(self):
-        if self.term._Term__day.value+1 < 8 and self.full_time == Lesson(Term(self.term.hour,self.term.minute,self.term.duration,Day(self.term._Term__day.value+1)), self.name, self.teacherName,self.year).full_time:
-            self.term._Term__day = Day(self.term._Term__day.value+1)
+        if self.timetable.can_be_transfered_to(Term(self.term.hour,self.term.minute,self.term.duration,Day(self.term.day.value+1)), self.full_time):
+            self.term.day = Day(self.term.day.value+1)
 
+    def starts_difference(start1: tuple, start2: tuple):
+        return math.fabs((start1[0]*60 + start1[1]) - (start2[0]*60 + start2[1]))
+    
     def earlierTime(self):
         t = self.term.duration%60
         if self.term.minute >= t:
-            if self.full_time == Lesson(Term(self.term.hour-(self.term.duration//60),self.term.minute-t,self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:
-                self.term.hour -= self.term.duration//60
-                self.term.minute -= t
+            if self.timetable.can_be_transfered_to(Term(self.term.hour-(self.term.duration//60),self.term.minute-t,self.term.duration,Day(self.term.day.value)), self.full_time):
+                if hasattr(self.timetable, 'breaks') and self.timetable.skipBreaks == True:
+                    bre = self.timetable.breaks_check(Term(self.term.hour-(self.term.duration//60),self.term.minute-t,self.term.duration,Day(self.term.day.value)))
+                    print(bre)
+                    if bre == None:
+                        self.term.hour -= self.term.duration // 60
+                        self.term.minute -= t
+                    else:
+                        self.term.hour -= (self.term.duration + bre.duration) // 60
+                        self.term.minute -= (self.term.duration + bre.duration) % 60
+                else:
+                    self.term.hour -= self.term.duration // 60
+                    self.term.minute -= t
         else:
-            if self.full_time == Lesson(Term(self.term.hour-(self.term.duration//60),self.term.minute-(t-60),self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:
-                self.term.hour -= 1
-                self.term.minute -= (t-60)
+            if self.timetable.can_be_transfered_to(Term(self.term.hour-(self.term.duration//60),self.term.minute-(t-60),self.term.duration,Day(self.term.day.value)), self.full_time):
+                if hasattr(self.timetable, 'breaks') and self.timetable.skipBreaks == True:
+                    bre = self.timetable.breaks_check(Term(self.term.hour-(self.term.duration//60),self.term.minute-(t-60),self.term.duration,Day(self.term.day.value)))
+                    print(bre)
+                    if bre == None:
+                        self.term.hour -= (1 + (self.term.duration // 60))
+                        self.term.minute -= (t-60)
+                    else:
+                        self.term.hour -= (1 + (self.term.duration + bre.duration) // 60)
+                        self.term.minute -= ((self.term.duration + bre.duration) % 60 - 60)
+                else:
+                    self.term.hour -= (1 + (self.term.duration // 60))
+                    self.term.minute -= (t-60)
+
 
     def laterTime(self):
         t = self.term.duration%60
         if self.term.minute + t <= 60:
-            if self.full_time == Lesson(Term(self.term.hour+(self.term.duration//60),self.term.minute+t,self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:
-                self.term.hour += self.term.duration//60
-                self.term.minute += t
+            if self.timetable.can_be_transfered_to(Term(self.term.hour+(self.term.duration//60),self.term.minute+t,self.term.duration,Day(self.term.day.value)), self.full_time):
+                if hasattr(self.timetable, 'breaks') and self.timetable.skipBreaks == True:
+                    bre = self.timetable.breaks_check(Term(self.term.hour+(self.term.duration//60),self.term.minute+t,self.term.duration,Day(self.term.day.value)))
+                    print(bre)
+                    if bre == None:
+                        self.term.hour += (self.term.duration // 60)
+                        self.term.minute += t
+                    else:
+                        self.term.hour += ((self.term.duration + bre.duration) // 60)
+                        self.term.minute += ((self.term.duration + bre.duration) % 60)
+                else:
+                    self.term.hour += (self.term.duration // 60)
+                    self.term.minute += t
         else:
-            if self.full_time == Lesson(Term(self.term.hour+(self.term.duration//60)+1,self.term.minute+(t-60),self.term.duration,Day(self.term._Term__day.value)), self.name, self.teacherName,self.year).full_time:
-                self.term.hour += (self.term.duration//60)+1
-                self.term.minute += (t-60)
+            if self.timetable.can_be_transfered_to(Term(self.term.hour+(self.term.duration//60)+1,self.term.minute+(t-60),self.term.duration,Day(self.term.day.value)), self.full_time):
+                if hasattr(self.timetable, 'breaks') and self.timetable.skipBreaks == True:
+                    bre = self.timetable.breaks_check(Term(self.term.hour+(self.term.duration//60)+1,self.term.minute+(t-60),self.term.duration,Day(self.term.day.value)))
+                    print(bre)
+                    if bre == None:
+                        self.term.hour += ((self.term.duration//60)+1)
+                        self.term.minute += (t-60)
+                    else:
+                        self.term.hour += (((self.term.duration+ bre.duration)//60)+1)
+                        self.term.minute += ((self.term.duration + bre.duration)%60-60)
 
+if __name__ == '__main__':
+    pass
