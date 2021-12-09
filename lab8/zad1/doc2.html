@@ -1,0 +1,22 @@
+<html>
+  <body onLoad="
+            console.log('Tekst 1');
+            window.alert('Tekst 2');
+          //  document.write('Tekst 3');
+          ">
+    <div>Treść dokumentu HTML</div>
+    <div>Treść dokumentu HTML</div>
+    <div>Treść dokumentu HTML</div>
+    <script>
+        var wartosc = window.prompt("Tekst1", 'Tekst2');
+        alert(wartosc + ': ' + typeof(wartosc) ); //drugi argument to wartość domyślna, nieobowiazkowa
+    </script>
+
+    <form id = 'simpleform'>
+        <input id="pole_tekstowe" type="text">
+        <input id="pole_liczbowe" type="number">
+        <input id ='wypisz' type="button" value="Wypisz" >
+    </form>
+    <script src = 'script.js'></script>
+    </body>
+</html>
