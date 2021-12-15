@@ -1,0 +1,116 @@
+.azure {
+    background-color: azure;
+}
+
+.box {
+    border:1px solid #000000;
+    box-shadow: 0px 0px 10px black;
+    margin: 25px;
+}
+
+@keyframes changingcolors {
+    from {
+        color: red;
+    }
+    to {
+        color:blue;
+    }
+}
+
+aside  {
+    /* Specyfikacja wyglądu */
+    float: right;
+    width: 550px;
+    padding: 5px;
+    clear: right;
+}
+aside h1{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    font-size: 22;
+    margin: 5px;
+    animation-name: changingcolors;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+aside h2{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    font-size: 22;
+    margin: 5px;
+}
+aside ul{
+    font-size: larger;
+}
+footer {
+/* Specyfikacja wyglądu */
+    clear: both;
+    padding: 10px;
+    font-size: larger;
+}
+header h1 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    font-size: 22;
+    margin: 10px;
+
+/* Specyfikacja wyglądu */
+}
+main {
+    float: left;
+    width: 450px;
+    clear: left;
+
+/* Specyfikacja wyglądu */
+}
+main blockquote{
+    margin: 20px;
+    white-space: pre-line;
+}
+main h1 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    font-size: 22;
+    margin: 10px;
+}
+nav {
+    float: left;
+/* Specyfikacja wyglądu */
+}
+nav ul {
+    margin: 20px;
+    font-size: larger;
+/* Specyfikacja wyglądu */
+}
+nav li {
+    width: 80px;
+    margin-left: 0;
+/* Specyfikacja wyglądu */
+}
+form {
+    float: left;
+    margin-left: 25px;
+}
+
+@media only screen and (max-aspect-ratio: 19/32) {
+    body{
+        margin: 10px;
+    }
+    aside, header, footer, main, nav {
+        box-sizing: border-box;
+        width: 98vw;
+        float: none;
+        margin: auto;
+
+    }
+    aside h1, aside h2, header h1, main h1{
+        font-size: large;
+    }
+
+    .box {
+        border: 1px solid #000000;
+        box-shadow: 0px 0px 10px black;
+        margin: auto;
+    }
+}
