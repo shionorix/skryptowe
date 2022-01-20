@@ -1,0 +1,50 @@
+<form>
+    <input id="area" type="text" placeholder="area" value="europe">
+    <input id="loc" type="text" placeholder="location" value="warsaw">
+    <input id="download" type="button" value="Pobierz">
+</form>
+<h1>Remote</h1>
+<div id='remote'>
+Remote date and time
+</div>
+<!-- ***************** -->
+<h1>Local</h1>
+<div id='local'>
+    Local date and time
+</div>
+<script>
+    area = document.getElementById("area");
+    loc = document.getElementById("loc");
+    button = document.getElementById("download");
+    rem = document.getElementById("remote");
+
+    button.onclick = function fireAjax() {
+        request = new XMLHttpRequest();
+        rem.textContent = 'Downloading data'
+        request.onload = function() {
+            console.log(this.responseText)
+            if (this.responseText == "This website is currently experiencing high load."){
+                rem.textContent = 'The server is overloaded'
+            }
+            else{
+            parsed = JSON.parse(this.responseText)
+            rem.textContent = parsed["datetime"]
+            }
+        }
+        request.open("GET", `http://worldtimeapi.org/api/timezone/${area.value}/${loc.value}`)        
+        request.send();
+
+        // var reqLocal = new XMLHttpRequest();
+
+        // reqLocal.onload = function() {
+        //     loc.textContent = this.responseXML
+        // }
+        // reqLocal.open('GET', 'http://localhost:8081');  
+        // reqLocal.responseType = "document"
+        // reqLocal.setRequestHeader('Content-type','application/x-www-form-urlencoded; charset=UTF-8');   
+        // reqLocal.send();
+
+    };
+
+
+</script>
