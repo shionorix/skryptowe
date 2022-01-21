@@ -133,7 +133,7 @@
     */
     function ajaxGet(){
         let xhr = new XMLHttpRequest();
-        let uri = `/submit?imie=${imie.value}`;
+        let uri = `/submit?imie=${encodeURIComponent(imie.value)}`;
         xhr.open('GET', uri, false);
         xhr.onreadystatechange = () => response(xhr);      
         xhr.send(null);
@@ -142,15 +142,15 @@
 
     function ajaxPost(){
         let xhr = new XMLHttpRequest();
-        let uri = `/submit?imie=${imie.value}`;
+        let uri = `/submit?imie=${encodeURIComponent(imie.value)}`;
         xhr.open('POST', uri, false);
         xhr.onreadystatechange = () => response(xhr); 
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send(`imie=${imie.value}`);
+        xhr.send(`imie=${encodeURIComponent(imie.value)}`);
     }
 
     function fetchApiGet(){
-      let uri = `/submit?imie=${imie.value}`;
+      let uri = `/submit?imie=${encodeURIComponent(imie.value)}`;
       fetch(uri)
         .then(function (response) {
           if (!response.ok) {
@@ -164,10 +164,10 @@
     }
 
     function fetchApiPost(){
-      let uri = `/submit?imie=${imie.value}`;
+      let uri = `/submit?imie=${encodeURIComponent(imie.value)}`;
       fetch(uri, {
           method: "POST",
-          body: `imie=${imie.value}`
+          body: `imie=${encodeURIComponent(imie.value)}`
       }).then(function (response) {
           if (!response.ok) {
             throw Error(response.statusText);
